@@ -47,8 +47,10 @@ def print(students)
     end
   end
   sorted_students.each do |cohort, students|
-    puts cohort.center(50)
-    puts students.center(50)
+    puts cohort.to_s.center(50)
+    students.each do |student|
+      puts student.to_s.center(50)
+    end
   end 
 end
 
