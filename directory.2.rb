@@ -1,17 +1,22 @@
 # get user input
 def input_students
-  puts "please enter the name of the students"
+  puts "please enter the name of the students followed by the cohort"
   puts "To finish, just hit return twice"
   # create an empty array
   students = []
   # get student name
-  name = gets.chomp
+  # print "Name: "
+  name, cohort = gets.split.map(&:to_sym)
   # while the name is not empty, repeat the following
-  while !name.empty? do
+  while !name.to_s.empty? do
+    # if cohort is empty set to default
+    if cohort.to_s.empty?
+      cohort = :defualt
+    end
     # add student hash to array
-    students <<  {name: name, cohort: :november, hobbies: "Taking over the world"}
+    students <<  {name: name, cohort: cohort, hobbies: "Taking over the world"}
     # get another name from user
-    name = gets.chomp
+    name, cohort = gets.split.map(&:to_sym)
   end
   # return the array of students
   students
