@@ -23,9 +23,12 @@ def print_header
   puts "-------------"
 end
 
+# prints student name with index, and only if the name starts with an "A"
 def print(students)
   students.each_with_index do |student, index|
-    puts " #{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+    if student[:name].start_with?("A")
+      puts " #{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end 
 end
 
