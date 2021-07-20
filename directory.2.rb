@@ -23,12 +23,12 @@ def print_header
   puts "-------------"
 end
 
-# prints student name with index only if shorter than 12 characters
+# print rewritten to use until rather than each
 def print(students)
-  students.each_with_index do |student, index|
-    if student[:name].length < 12
-      puts " #{index}. #{student[:name]} (#{student[:cohort]} cohort)"
-    end
+  index = 0
+  until students.length == index
+      puts " .#{index} #{students[index][:name]} (#{students[index][:cohort]} cohort)"
+      index += 1
   end 
 end
 
