@@ -14,7 +14,13 @@ def input_students
       cohort = :defualt
     end
     # add student hash to array
-    students <<  {name: name, cohort: cohort, hobbies: "Taking over the world"}
+    puts "Add to system? yes, or no"
+    confirm = gets.chomp
+      if confirm == "yes"
+        students <<  {name: name, cohort: cohort, hobbies: "Taking over the world"}
+      else
+        puts "corrected details please"
+      end
     # get another name from user
     name, cohort = gets.split.map(&:to_sym)
   end
