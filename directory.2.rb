@@ -6,7 +6,7 @@ def input_students
   students = []
   # get student name
   # print "Name: "
-  name, cohort = gets.split.map(&:to_sym)
+  name, cohort = gets.delete_suffix("\n").split.map(&:to_sym)
   # while the name is not empty, repeat the following
   while !name.to_s.empty? do
     # if cohort is empty set to default
@@ -22,7 +22,7 @@ def input_students
       #  puts "corrected details please"
       # end
     # get another name from user
-    name, cohort = gets.split.map(&:to_sym)
+    name, cohort = gets.delete_suffix("\n").split.map(&:to_sym)
   end
   # return the array of students
   students
@@ -55,7 +55,11 @@ def print(students)
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students".center(50)
+  if names.count == 1 
+    puts "Overall, we have #{names.count} great student".center(50)
+  else
+    puts "Overall, we have #{names.count} great students".center(50)
+  end
 end
 
 #here we call the methods
