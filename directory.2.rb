@@ -14,13 +14,13 @@ def input_students
       cohort = :defualt
     end
     # add student hash to array
-    puts "Add to system? yes, or no"
-    confirm = gets.chomp
-      if confirm == "yes"
-        students <<  {name: name, cohort: cohort, hobbies: "Taking over the world"}
-      else
-        puts "corrected details please"
-      end
+    # puts "Add to system? yes, or no"
+    # confirm = gets.chomp
+      # if confirm == "yes"
+        students <<  {name: name, cohort: cohort}
+      # else
+      #  puts "corrected details please"
+      # end
     # get another name from user
     name, cohort = gets.split.map(&:to_sym)
   end
@@ -34,12 +34,21 @@ def print_header
   puts "-------------".center(50)
 end
 
-# print 
+# print out students grouped by cohort
 def print(students)
-  index = 0
-  until students.length == index
-      puts " .#{index} #{students[index][:name]} (#{students[index][:cohort]} cohort) #{students[index][:hobbies]}".center(50)
-      index += 1
+  sorted_students = {}
+  students.each do |student|
+    cohort = student[:cohort].to_s
+    name = student[:name].to_s
+    if !sorted_students[cohort]
+      sorted_students[cohort] = [name]
+    else
+      sorted_students[cohort].push(name)
+    end
+  end
+  sorted_students.each do |cohort, students|
+    puts cohort.center(50)
+    puts students.center(50)
   end 
 end
 
