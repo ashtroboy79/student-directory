@@ -75,34 +75,39 @@ end
 
 def save_students
   #open the file for writing
-  file = File.open("students.csv", "w")
+  filename = get_filename
+  file = File.open(filename, "w")
   #iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  puts "Saved #{@students.count} to #{filename}"
   file.close
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    student_to_array(name, cohort.to_sym)
+  filename = get_filename
+  if File.exist?(filename)
+    File.open(filename, "r") do |file|
+      file.each_line do |line|
+        name, cohort = line.chomp.split(',')
+        student_to_array(name, cohort.to_sym)
+      end
+    end
+    puts "Loaded #{@students.count} from #{filename}"
   end
-  file.close
 end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isnt given
+  return if filename.nil?
   if File.exists?(filename) # if it exists
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
-    exit #quit the program
+    exit
   end
 end
 
@@ -110,7 +115,11 @@ def student_to_array(name, cohort)
   @students << {name: name, cohort: cohort}
 end
 
-
+def get_filename
+  puts "Please enter filename: "
+  filename = gets.chomp
+  return filename
+end
 
 try_load_students
 interactive_menu
