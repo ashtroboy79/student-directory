@@ -1,3 +1,4 @@
+require 'csv'
 @students = []
 
 # get user input
@@ -27,8 +28,8 @@ def print_menu
   # 1. print the menu and ask the userwhat to do
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a csv file"
+  puts "4. Load the list from a csv file"
   puts "9. Exit" 
 end
 
@@ -75,34 +76,35 @@ end
 
 def save_students
   #open the file for writing
-  file = File.open("students.csv", "w")
+  filename = get_filename
+  CSV.open(filename, "wb") do |csv|
   #iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    @students.each do |student|
+     csv << [student[:name], student[:cohort]]
+    end
   end
-  file.close
+  puts "Saved #{@students.count} to #{filename}"
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    student_to_array(name, cohort.to_sym)
+  filename = get_filename
+  if File.exist?(filename)
+    CSV.foreach(filename) do |row|
+      name, cohort = row
+      student_to_array(name, cohort.to_sym)
+    end
+    puts "Loaded #{@students.count} from #{filename}"
   end
-  file.close
 end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isnt given
+  return if filename.nil?
   if File.exists?(filename) # if it exists
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
-    exit #quit the program
+    exit
   end
 end
 
@@ -110,7 +112,11 @@ def student_to_array(name, cohort)
   @students << {name: name, cohort: cohort}
 end
 
-
+def get_filename
+  puts "Please enter filename: "
+  filename = gets.chomp
+  return filename
+end
 
 try_load_students
 interactive_menu
